@@ -4,6 +4,7 @@ A powerful competitive audit tool that combines data from SimilarWeb, Ahrefs, an
 
 ## Features
 
+- **🌐 Web User Interface**: Beautiful, modern web UI for easy point-and-click audits (NEW!)
 - **Traffic Analytics**: Get detailed traffic metrics including visits, bounce rate, pages per visit, and traffic sources using SimilarWeb data
 - **SEO Metrics**: Analyze domain authority, backlinks, referring domains, and organic keywords using Ahrefs data
 - **SEMRush Intelligence**: Access authority scores, paid search data, keyword rankings, and comprehensive backlink analysis
@@ -54,6 +55,24 @@ Quick setup example (add to your Claude Code config):
 ```
 
 ## Usage
+
+### Web Interface (Easiest!)
+
+Start the web server and use the beautiful UI:
+
+```bash
+npm run web
+```
+
+Then open `http://localhost:3000` in your browser!
+
+**Features:**
+- ✨ Modern, responsive design
+- 📊 Visual results display
+- 💾 One-click report downloads
+- 📱 Mobile-friendly
+
+See [WEB_UI.md](WEB_UI.md) for complete web interface documentation.
 
 ### Command Line Interface
 
