@@ -76,11 +76,71 @@ export interface Backlink {
   domainRating?: number;
 }
 
+export interface SEMRushMetrics extends DomainMetrics {
+  // Domain Overview
+  organicSearchTraffic?: number;
+  paidSearchTraffic?: number;
+  authorityScore?: number;
+  totalBacklinks?: number;
+  totalReferringDomains?: number;
+
+  // Keyword Metrics
+  organicKeywordsCount?: number;
+  paidKeywordsCount?: number;
+  organicTrafficCost?: number;
+  paidTrafficCost?: number;
+
+  // Rankings
+  organicPositionsTop3?: number;
+  organicPositionsTop10?: number;
+  organicPositionsTop100?: number;
+
+  // Competitors
+  organicCompetitors?: Competitor[];
+  paidCompetitors?: Competitor[];
+
+  // Top Keywords
+  topOrganicKeywords?: SEMRushKeyword[];
+  topPaidKeywords?: SEMRushKeyword[];
+
+  // Backlinks
+  backlinksOverview?: BacklinksOverview;
+}
+
+export interface Competitor {
+  domain: string;
+  competitionLevel: number;
+  commonKeywords?: number;
+}
+
+export interface SEMRushKeyword {
+  keyword: string;
+  position?: number;
+  volume?: number;
+  cpc?: number;
+  competition?: number;
+  traffic?: number;
+  trafficCost?: number;
+  url?: string;
+  difficulty?: number;
+}
+
+export interface BacklinksOverview {
+  total?: number;
+  follows?: number;
+  noFollows?: number;
+  govBacklinks?: number;
+  eduBacklinks?: number;
+  referringDomains?: number;
+  referringIPs?: number;
+}
+
 export interface CompetitiveAuditReport {
   generatedAt: string;
   domains: string[];
   similarWebData: Record<string, SimilarWebMetrics>;
   ahrefsData: Record<string, AhrefsMetrics>;
+  semrushData: Record<string, SEMRushMetrics>;
   analysis: CompetitiveAnalysis;
 }
 
@@ -89,6 +149,8 @@ export interface CompetitiveAnalysis {
   seoLeader?: string;
   topBacklinksDomain?: string;
   mostOrganicKeywords?: string;
+  highestAuthorityScore?: string;
+  bestPaidSearchPerformance?: string;
   insights: string[];
   recommendations: string[];
 }
@@ -99,6 +161,7 @@ export interface AuditOptions {
   includeSEO?: boolean;
   includeBacklinks?: boolean;
   includeKeywords?: boolean;
+  includeSEMRush?: boolean;
   outputFormat?: 'json' | 'markdown' | 'html';
   outputFile?: string;
 }

@@ -1,12 +1,13 @@
 # Competitive Insights
 
-A powerful competitive audit tool that combines data from SimilarWeb and Ahrefs MCP servers to provide comprehensive competitive intelligence for websites and domains.
+A powerful competitive audit tool that combines data from SimilarWeb, Ahrefs, and SEMRush MCP servers to provide comprehensive competitive intelligence for websites and domains.
 
 ## Features
 
 - **Traffic Analytics**: Get detailed traffic metrics including visits, bounce rate, pages per visit, and traffic sources using SimilarWeb data
 - **SEO Metrics**: Analyze domain authority, backlinks, referring domains, and organic keywords using Ahrefs data
-- **Competitive Analysis**: Automatically identify leaders in traffic, SEO, and backlinks
+- **SEMRush Intelligence**: Access authority scores, paid search data, keyword rankings, and comprehensive backlink analysis
+- **Competitive Analysis**: Automatically identify leaders in traffic, SEO, authority, and paid search performance
 - **Multiple Report Formats**: Generate reports in JSON, Markdown, or HTML format
 - **CLI & Library**: Use as a command-line tool or integrate into your Node.js applications
 - **Parallel Processing**: Fetch data for multiple domains simultaneously for faster analysis
@@ -23,29 +24,30 @@ npm run build
 This tool requires access to:
 - **SimilarWeb MCP Server**: For traffic and engagement metrics
 - **Ahrefs MCP Server**: For SEO and backlink data
+- **SEMRush MCP Server**: For authority scores, paid search, and keyword intelligence
 
 ### Setting Up MCP Servers
 
-To use real data from SimilarWeb and Ahrefs, you need to configure MCP servers. Update the `createMCPClient` function in `src/clients/mcp-client.ts` to connect to your actual MCP servers instead of using the mock client.
+To use real data from SimilarWeb, Ahrefs, and SEMRush, you need to configure MCP servers. See the **[MCP_SETUP.md](MCP_SETUP.md)** file for detailed installation and configuration instructions.
 
-Example MCP server configuration (add to your Claude Code config):
+Quick setup example (add to your Claude Code config):
 
 ```json
 {
   "mcpServers": {
     "similarweb": {
       "command": "npx",
-      "args": ["@similarweb/mcp-server"],
-      "env": {
-        "SIMILARWEB_API_KEY": "your-api-key"
-      }
+      "args": ["-y", "mcp-remote@latest", "https://mcp.similarweb.com/", "--header", "api-key: ${SIMILARWEB_API_KEY}"]
     },
     "ahrefs": {
       "command": "npx",
-      "args": ["@ahrefs/mcp-server"],
-      "env": {
-        "AHREFS_API_KEY": "your-api-key"
-      }
+      "args": ["--prefix=~/.global-node-modules", "@ahrefs/mcp"],
+      "env": {"API_KEY": "${AHREFS_API_KEY}"}
+    },
+    "semrush": {
+      "command": "npx",
+      "args": ["-y", "github:mrkooblu/semrush-mcp"],
+      "env": {"SEMRUSH_API_KEY": "${SEMRUSH_API_KEY}"}
     }
   }
 }

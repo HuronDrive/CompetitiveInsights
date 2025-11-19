@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "similarweb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://mcp.similarweb.com/",
+        "--header",
+        "api-key: ${SIMILARWEB_API_KEY}"
+      ]
+    },
+    "ahrefs": {
+      "command": "npx",
+      "args": ["--prefix=~/.global-node-modules", "@ahrefs/mcp"],
+      "env": {
+        "API_KEY": "${AHREFS_API_KEY}"
+      }
+    },
+    "semrush": {
+      "command": "npx",
+      "args": ["-y", "github:mrkooblu/semrush-mcp"],
+      "env": {
+        "SEMRUSH_API_KEY": "${SEMRUSH_API_KEY}",
+        "API_CACHE_TTL_SECONDS": "300",
+        "API_RATE_LIMIT_PER_SECOND": "10"
+      }
+    }
+  }
+}

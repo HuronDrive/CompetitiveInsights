@@ -2,7 +2,7 @@
  * Report generator for competitive audit results
  */
 
-import { CompetitiveAuditReport, SimilarWebMetrics, AhrefsMetrics } from '../types.js';
+import { CompetitiveAuditReport, SimilarWebMetrics, AhrefsMetrics, SEMRushMetrics } from '../types.js';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 
@@ -122,21 +122,92 @@ export class ReportGenerator {
       lines.push('---\n');
     }
 
+    // SEMRush Metrics
+    if (Object.keys(report.semrushData).length > 0) {
+      lines.push('## SEMRush Intelligence\n');
+
+      for (const domain of report.domains) {
+        const metrics = report.semrushData[domain];
+        if (!metrics) continue;
+
+        lines.push(`### ${domain}\n`);
+        lines.push('| Metric | Value |');
+        lines.push('|--------|-------|');
+
+        if (metrics.authorityScore) {
+          lines.push(`| Authority Score | ${metrics.authorityScore} |`);
+        }
+        if (metrics.organicSearchTraffic) {
+          lines.push(`| Organic Traffic | ${metrics.organicSearchTraffic.toLocaleString()} |`);
+        }
+        if (metrics.paidSearchTraffic) {
+          lines.push(`| Paid Traffic | ${metrics.paidSearchTraffic.toLocaleString()} |`);
+        }
+        if (metrics.organicKeywordsCount) {
+          lines.push(`| Organic Keywords | ${metrics.organicKeywordsCount.toLocaleString()} |`);
+        }
+        if (metrics.paidKeywordsCount) {
+          lines.push(`| Paid Keywords | ${metrics.paidKeywordsCount.toLocaleString()} |`);
+        }
+        if (metrics.organicTrafficCost) {
+          lines.push(`| Organic Value | $${metrics.organicTrafficCost.toLocaleString()} |`);
+        }
+        if (metrics.paidTrafficCost) {
+          lines.push(`| Paid Cost | $${metrics.paidTrafficCost.toLocaleString()} |`);
+        }
+        if (metrics.totalBacklinks) {
+          lines.push(`| Total Backlinks | ${metrics.totalBacklinks.toLocaleString()} |`);
+        }
+        if (metrics.totalReferringDomains) {
+          lines.push(`| Referring Domains | ${metrics.totalReferringDomains.toLocaleString()} |`);
+        }
+
+        // Ranking positions
+        if (metrics.organicPositionsTop3 || metrics.organicPositionsTop10 || metrics.organicPositionsTop100) {
+          lines.push('');
+          lines.push('**Organic Positions:**');
+          if (metrics.organicPositionsTop3) lines.push(`- Top 3: ${metrics.organicPositionsTop3.toLocaleString()}`);
+          if (metrics.organicPositionsTop10) lines.push(`- Top 10: ${metrics.organicPositionsTop10.toLocaleString()}`);
+          if (metrics.organicPositionsTop100) lines.push(`- Top 100: ${metrics.organicPositionsTop100.toLocaleString()}`);
+        }
+
+        // Backlinks breakdown
+        if (metrics.backlinksOverview) {
+          const bl = metrics.backlinksOverview;
+          if (bl.follows || bl.noFollows || bl.govBacklinks || bl.eduBacklinks) {
+            lines.push('');
+            lines.push('**Backlinks Breakdown:**');
+            if (bl.follows) lines.push(`- Follow: ${bl.follows.toLocaleString()}`);
+            if (bl.noFollows) lines.push(`- NoFollow: ${bl.noFollows.toLocaleString()}`);
+            if (bl.govBacklinks) lines.push(`- .gov: ${bl.govBacklinks.toLocaleString()}`);
+            if (bl.eduBacklinks) lines.push(`- .edu: ${bl.eduBacklinks.toLocaleString()}`);
+          }
+        }
+
+        lines.push('');
+      }
+
+      lines.push('---\n');
+    }
+
     // Comparison Table
     lines.push('## Quick Comparison\n');
-    lines.push('| Domain | Traffic | DR | Backlinks | Org. Keywords |');
-    lines.push('|--------|---------|----|-----------+---------------|');
+    lines.push('| Domain | Traffic | DR | Auth Score | Backlinks | Org. Keywords | Paid Traffic |');
+    lines.push('|--------|---------|----+------------|-----------|---------------|--------------|');
 
     for (const domain of report.domains) {
       const sw = report.similarWebData[domain];
       const ah = report.ahrefsData[domain];
+      const sr = report.semrushData[domain];
 
       const traffic = sw?.visits ? sw.visits.toLocaleString() : 'N/A';
       const dr = ah?.domainRating || 'N/A';
+      const authScore = sr?.authorityScore || 'N/A';
       const backlinks = ah?.backlinks ? ah.backlinks.toLocaleString() : 'N/A';
       const keywords = ah?.organicKeywords ? ah.organicKeywords.toLocaleString() : 'N/A';
+      const paidTraffic = sr?.paidSearchTraffic ? sr.paidSearchTraffic.toLocaleString() : 'N/A';
 
-      lines.push(`| ${domain} | ${traffic} | ${dr} | ${backlinks} | ${keywords} |`);
+      lines.push(`| ${domain} | ${traffic} | ${dr} | ${authScore} | ${backlinks} | ${keywords} | ${paidTraffic} |`);
     }
 
     lines.push('');

@@ -32,6 +32,8 @@ export class MockMCPClient implements MCPClient {
       return this.getMockSimilarWebData(toolName, params) as T;
     } else if (this.serverName === 'ahrefs') {
       return this.getMockAhrefsData(toolName, params) as T;
+    } else if (this.serverName === 'semrush') {
+      return this.getMockSEMRushData(toolName, params) as T;
     }
 
     throw new Error(`Unknown server: ${this.serverName}`);
@@ -54,6 +56,22 @@ export class MockMCPClient implements MCPClient {
         'get_organic_keywords',
         'get_top_pages',
         'get_top_keywords'
+      ];
+    } else if (this.serverName === 'semrush') {
+      return [
+        'domain_overview',
+        'domain_organic',
+        'domain_organic_keywords',
+        'domain_adwords_keywords',
+        'domain_organic_competitors',
+        'domain_adwords_competitors',
+        'backlinks_overview',
+        'backlinks',
+        'backlinks_refdomains',
+        'keyword_difficulty',
+        'related_keywords',
+        'traffic_summary',
+        'balance'
       ];
     }
     return [];
@@ -103,6 +121,50 @@ export class MockMCPClient implements MCPClient {
           organicKeywords: Math.floor(Math.random() * 500000),
           organicTraffic: Math.floor(Math.random() * 1000000),
           organicValue: Math.floor(Math.random() * 10000000)
+        };
+      default:
+        return { domain, data: 'mock' };
+    }
+  }
+
+  private getMockSEMRushData(toolName: string, params: any): any {
+    const domain = params.domain || 'example.com';
+
+    switch (toolName) {
+      case 'domain_overview':
+        return {
+          domain,
+          organic_traffic: Math.floor(Math.random() * 5000000),
+          paid_traffic: Math.floor(Math.random() * 500000),
+          authority_score: Math.floor(30 + Math.random() * 70),
+          backlinks_num: Math.floor(Math.random() * 500000),
+          referring_domains: Math.floor(Math.random() * 50000),
+          organic_keywords: Math.floor(Math.random() * 300000),
+          paid_keywords: Math.floor(Math.random() * 50000),
+          organic_cost: Math.floor(Math.random() * 5000000),
+          paid_cost: Math.floor(Math.random() * 1000000)
+        };
+      case 'domain_organic':
+        return {
+          domain,
+          positions_1_3: Math.floor(Math.random() * 10000),
+          positions_4_10: Math.floor(Math.random() * 20000),
+          positions_11_100: Math.floor(Math.random() * 100000)
+        };
+      case 'backlinks_overview':
+        return {
+          domain,
+          total: Math.floor(Math.random() * 500000),
+          follows: Math.floor(Math.random() * 400000),
+          nofollows: Math.floor(Math.random() * 100000),
+          gov: Math.floor(Math.random() * 1000),
+          edu: Math.floor(Math.random() * 2000),
+          domains_num: Math.floor(Math.random() * 50000),
+          ips_num: Math.floor(Math.random() * 40000)
+        };
+      case 'balance':
+        return {
+          units: 100000 + Math.floor(Math.random() * 900000)
         };
       default:
         return { domain, data: 'mock' };

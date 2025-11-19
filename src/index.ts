@@ -6,6 +6,7 @@
 export { CompetitiveAuditService } from './services/audit-service.js';
 export { SimilarWebService } from './services/similarweb-service.js';
 export { AhrefsService } from './services/ahrefs-service.js';
+export { SEMRushService } from './services/semrush-service.js';
 export { ReportGenerator } from './utils/report-generator.js';
 export { createMCPClient } from './clients/mcp-client.js';
 
@@ -15,12 +16,16 @@ export type {
   AuditOptions,
   SimilarWebMetrics,
   AhrefsMetrics,
+  SEMRushMetrics,
   CompetitiveAnalysis,
   DomainMetrics,
   TrafficSources,
   Keyword,
   Backlink,
   TopPage,
+  SEMRushKeyword,
+  Competitor,
+  BacklinksOverview,
 } from './types.js';
 
 // Example usage for developers
