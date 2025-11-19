@@ -15,3 +15,6 @@ real-data-test.*
 *-test.md
 *-test.json
 *-test.html
+*-audit.md
+*-audit.json
+*-audit.html
