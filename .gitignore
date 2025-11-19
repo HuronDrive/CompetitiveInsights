@@ -7,3 +7,7 @@ coverage/
 .vscode/
 *.tsbuildinfo
 reports/
+test-report.*
+*-report.json
+*-report.html
+*-report.md
