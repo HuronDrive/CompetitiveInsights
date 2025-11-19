@@ -11,3 +11,7 @@ test-report.*
 *-report.json
 *-report.html
 *-report.md
+real-data-test.*
+*-test.md
+*-test.json
+*-test.html
